@@ -185,6 +185,28 @@ const routes: Record<string, Handler> = {
     return row;
   },
 
+  /** Todos os dados da conta em JSON (LGPD, art. 18: acesso e portabilidade). */
+  "GET me/export": async ({ user, k }) => {
+    const mine = (table: string) => k(table).where({ user_id: user.id }).select("*")
+      .then((rows) => rows.map(({ user_id: _, ...row }) => row));
+    const [profile] = await mine("profiles");
+    const [categories, accounts, transactions, recurrences, work_entries] = await Promise.all(
+      ["categories", "accounts", "transactions", "recurrences", "work_entries"].map(mine),
+    );
+    return {
+      app: "Meu DimDim",
+      exported_at: new Date().toISOString(),
+      account: { email: user.email, name: user.name },
+      profile: profile ?? null,
+      categories,
+      accounts,
+      transactions,
+      recurrences,
+      work_entries,
+      notes: "Valores em centavos (ex.: 1550 = R$ 15,50). Durações em segundos.",
+    };
+  },
+
   /**
    * Exclui a conta de vez (exigência do Google Play). Apagar o usuário do
    * Supabase Auth leva junto, em cascata, perfil, categorias, contas,

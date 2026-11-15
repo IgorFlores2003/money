@@ -3,6 +3,7 @@ import { RiArrowLeftLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { supabase } from "./supabase";
 import { authError, passwordError } from "./auth";
 import { ErrorNote } from "./components";
+import { PrivacyLink, PRIVACY_VERSION } from "./legal/Privacy";
 
 type Mode = "login" | "signup" | "confirm" | "forgot" | "recover" | "password";
 
@@ -31,6 +32,7 @@ export default function AccountAccess({
   const [confirmation, setConfirmation] = useState("");
   const [token, setToken] = useState("");
   const [visible, setVisible] = useState(false);
+  const [accepted, setAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -65,6 +67,7 @@ export default function AccountAccess({
       const problem = passwordError(password, confirmation);
       if (problem) return setError(problem);
     }
+    if (mode === "signup" && !accepted) return setError("Para criar a conta, aceite a Política de Privacidade.");
     inFlight.current = true;
     setBusy(true);
     const address = email.trim();
@@ -83,7 +86,14 @@ export default function AccountAccess({
         const { data, error } = await supabase.auth.signUp({
           email: address,
           password,
-          options: { data: { display_name: name.trim() } },
+          options: {
+            data: {
+              display_name: name.trim(),
+              // Registro do aceite (LGPD): qual versão da política e quando.
+              privacy_version: PRIVACY_VERSION,
+              privacy_accepted_at: new Date().toISOString(),
+            },
+          },
         });
         if (error) throw error;
         setCooldown(60);
@@ -197,6 +207,16 @@ export default function AccountAccess({
         pw(password, setPassword, mode === "password" ? "Nova senha" : "Senha", mode === "login" ? "current-password" : "new-password")}
       {(mode === "signup" || mode === "password") &&
         pw(confirmation, setConfirmation, "Repita a senha", "new-password")}
+      {mode === "signup" && (
+        <label className="flex items-start gap-2 text-sm text-ink-700">
+          <input type="checkbox" className="mt-0.5 size-4" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
+          <span>
+            Li e aceito a{" "}
+            <PrivacyLink className="font-medium text-brand-700" />
+            . Tenho 18 anos ou mais.
+          </span>
+        </label>
+      )}
       {(mode === "confirm" || mode === "recover") && (
         <label className="block">
           <span className="label">Código</span>

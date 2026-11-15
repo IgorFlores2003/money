@@ -7,7 +7,7 @@ import { supabase } from "../../supabase";
 import { colorMode, setColorMode, type ColorMode } from "../../theme";
 import AccountsSection from "./AccountsSection";
 import CategoriesSection from "./CategoriesSection";
-import DeleteAccount from "./DeleteAccount";
+import PrivacySection from "./PrivacySection";
 import ProfileForm from "./ProfileForm";
 
 export default function Settings() {
@@ -28,7 +28,7 @@ export default function Settings() {
           <RiLogoutBoxRLine className="size-5" /> Sair
         </button>
       </section>
-      <DeleteAccount />
+      <PrivacySection />
       <p className="text-center text-xs text-ink-400">Sua hora vale {brl(hourValueCents(profile))}</p>
     </div>
   );

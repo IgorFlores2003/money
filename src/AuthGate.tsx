@@ -5,6 +5,7 @@ import AccountAccess from "./AccountAccess";
 import App from "./App";
 import { supabase } from "./supabase";
 import { Spinner } from "./components";
+import { PrivacyLink } from "./legal/Privacy";
 
 export default function AuthGate() {
   const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null);
@@ -53,6 +54,9 @@ export default function AuthGate() {
               onRecovered={() => setRecovery(false)}
             />
           )}
+          <p className="mt-8 text-center text-sm text-ink-500">
+            <PrivacyLink />
+          </p>
         </div>
       </main>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import AuthGate from "./AuthGate";
+import Privacy, { PRIVACY_PATH } from "./legal/Privacy";
 import { ConfirmHost } from "./components";
 import { applyColorMode, colorMode } from "./theme";
 import "./styles.css";
@@ -12,7 +13,7 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <AuthGate />
+    {location.pathname.replace(/\/$/, "") === PRIVACY_PATH ? <Privacy /> : <AuthGate />}
     <ConfirmHost />
   </React.StrictMode>,
 );

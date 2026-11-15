@@ -12,6 +12,7 @@ Finanças pessoais para web e Android: horas de serviço, salário, receitas e d
 - **Parcelado** (inclusive compra em andamento, ex.: “MAC 8/12” cria da 8ª à 12ª) e **conta fixa** todo mês (assinaturas, aluguel), que aparece como prevista até ser paga.
 - **Pessoas**: “devo a fulano” / “fulano me deve”, saldo por pessoa somando todos os meses e botão de quitar tudo.
 - **Resumo do mês**: sobra, receita × despesas, horas que faltam para a meta, sobra projetada se bater a meta, despesas por categoria, por conta/cartão e evolução de 6 meses. Cada despesa mostra quantas horas de trabalho custa.
+- **Privacidade (LGPD)**: política pública em `/privacidade` (texto e dados do controlador em `src/legal/Privacy.tsx`), aceite registrado no cadastro, “Baixar meus dados” (JSON) e “Excluir minha conta” em Ajustes.
 - Modo claro/escuro, instalável como app pelo navegador (manifest) e Android via Capacitor.
 
 ## Estrutura
