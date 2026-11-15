@@ -1,0 +1,17 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.vercel
+android/.gradle/
+android/.idea/
+android/local.properties
+android/**/build/
+*.apk
+*.aab
+*.keystore
+*.jks
+.DS_Store
+*.log
