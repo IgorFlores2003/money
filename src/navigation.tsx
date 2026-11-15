@@ -26,6 +26,8 @@ interface Nav {
   go: (tab: Tab) => void;
   /** Abre o formulário de lançamento. */
   editEntry: (draft?: Draft) => void;
+  /** Abre o lançamento por foto. */
+  importPhoto: () => void;
 }
 
 export const NavContext = createContext<Nav | null>(null);

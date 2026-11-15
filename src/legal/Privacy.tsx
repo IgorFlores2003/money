@@ -7,8 +7,8 @@ export const CONTROLLER = {
   email: "igorfb2003@gmail.com",
 };
 /** Mude a versão sempre que o texto mudar: o aceite no cadastro guarda qual foi aceita. */
-export const PRIVACY_VERSION = "2026-11-15";
-const UPDATED = "15 de novembro de 2026";
+export const PRIVACY_VERSION = "2026-11-16";
+const UPDATED = "16 de novembro de 2026";
 export const PRIVACY_PATH = "/privacidade";
 
 /** Link que abre a política por cima da tela atual (não perde o que foi digitado). */
@@ -86,6 +86,7 @@ export default function Privacy({ onClose }: { onClose?: () => void }) {
                 <><strong>Cadastro:</strong> nome, e-mail e senha. A senha é guardada apenas como hash (bcrypt) pelo serviço de autenticação; ninguém, nem nós, consegue lê-la.</>,
                 <><strong>Renda e trabalho:</strong> valor da hora, salário, meta de horas, registros de horas trabalhadas e o cronômetro.</>,
                 <><strong>Lançamentos:</strong> despesas e receitas (valor, descrição, data, categoria, conta ou cartão, parcelas, contas fixas) que você mesmo digita. Não pedimos número de cartão, conta bancária nem CPF.</>,
+                <><strong>Fotos para lançamento:</strong> se você usar “Lançar por foto”, a imagem (planilha, extrato, nota) é enviada para leitura automática. Ela não é guardada no Meu DimDim: só os lançamentos que você confirmar são salvos.</>,
                 <><strong>Pessoas citadas por você:</strong> nomes que você informa em “devo a alguém” / “alguém me deve”.</>,
                 <><strong>Dados técnicos:</strong> a sessão de login e a preferência de tema ficam guardadas no seu aparelho. Os provedores de hospedagem registram dados de acesso (como IP, data e hora) por segurança.</>,
               ]}
@@ -97,6 +98,7 @@ export default function Privacy({ onClose }: { onClose?: () => void }) {
             <List
               items={[
                 <><strong>Criar e manter sua conta e mostrar seus cálculos</strong> (sobra do mês, horas, saldos por pessoa): execução do contrato de uso do app (art. 7º, V).</>,
+                <><strong>Ler fotos que você envia e sugerir lançamentos</strong> para você conferir: execução do contrato (art. 7º, V), só quando você escolhe usar o recurso.</>,
                 <><strong>Enviar códigos de confirmação e de recuperação de senha por e-mail:</strong> execução do contrato (art. 7º, V).</>,
                 <><strong>Proteger o serviço contra acessos indevidos e fraudes:</strong> legítimo interesse (art. 7º, IX) e exercício regular de direitos (art. 7º, VI).</>,
                 <><strong>Nomes de terceiros que você informa:</strong> são usados só para o seu controle pessoal, dentro da sua conta, e nunca para contatar essas pessoas. Ao informá-los, você declara que tem legitimidade para isso.</>,
@@ -112,6 +114,7 @@ export default function Privacy({ onClose }: { onClose?: () => void }) {
                 <><strong>Supabase</strong>: banco de dados e login.</>,
                 <><strong>Vercel</strong>: hospedagem do site e da API.</>,
                 <><strong>Google (Gmail)</strong>: envio dos e-mails com códigos.</>,
+                <><strong>Google (Gemini)</strong>: leitura das fotos enviadas em “Lançar por foto”. Pelos termos do Google para esse serviço, o conteúdo enviado pode ser analisado pelo Google, inclusive para melhorar os produtos dele. Por isso, evite fotos com dados que você não queira compartilhar (como número completo de cartão ou documentos). O recurso é opcional.</>,
               ]}
             />
             <p>Também podemos fornecer dados se uma lei ou ordem de autoridade competente exigir.</p>

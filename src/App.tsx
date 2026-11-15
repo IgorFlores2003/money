@@ -5,6 +5,7 @@ import { NavContext, TABS, type Draft, type Tab } from "./navigation";
 import { BottomNav, ErrorNote, SideNav } from "./components";
 import Home from "./screens/home/Home";
 import Entries from "./screens/entries/Entries";
+import PhotoImport from "./screens/entries/PhotoImport";
 import TransactionSheet from "./screens/entries/TransactionSheet";
 import Work from "./screens/work/Work";
 import People from "./screens/people/People";
@@ -36,13 +37,17 @@ function Shell() {
   const { error } = useStore();
   const [tab, setTab] = useState<Tab>(initialTab);
   const [draft, setDraft] = useState<Draft | null>(null);
+  const [photo, setPhoto] = useState(false);
 
   useEffect(() => {
     history.replaceState(null, "", tab === "home" ? location.pathname : `#${tab}`);
     window.scrollTo(0, 0);
   }, [tab]);
 
-  const nav = useMemo(() => ({ tab, go: setTab, editEntry: (d?: Draft) => setDraft(d ?? {}) }), [tab]);
+  const nav = useMemo(
+    () => ({ tab, go: setTab, editEntry: (d?: Draft) => setDraft(d ?? {}), importPhoto: () => setPhoto(true) }),
+    [tab],
+  );
   const Screen = SCREENS[tab];
 
   return (
@@ -60,6 +65,7 @@ function Shell() {
       </div>
       <BottomNav />
       {draft && <TransactionSheet draft={draft} onClose={() => setDraft(null)} />}
+      {photo && <PhotoImport onClose={() => setPhoto(false)} />}
     </NavContext.Provider>
   );
 }

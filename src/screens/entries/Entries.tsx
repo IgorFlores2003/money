@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RiSearchLine } from "react-icons/ri";
+import { RiCameraLine, RiSearchLine } from "react-icons/ri";
 import { brl, type Entry } from "../../../shared/finance";
 import { post, put } from "../../api";
 import { ErrorNote, PageHeader, Segmented, Spinner, Stat } from "../../components";
@@ -13,7 +13,7 @@ type Filter = "all" | "expense" | "income";
 
 export default function Entries() {
   const { entries, categories, loadingMonth, summary, reload } = useStore();
-  const { editEntry } = useNav();
+  const { editEntry, importPhoto } = useNav();
   const [filter, setFilter] = useState<Filter>("all");
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
@@ -53,6 +53,10 @@ export default function Entries() {
   return (
     <div className="flex flex-col gap-4">
       <PageHeader title="Lançamentos" withMonth />
+
+      <button className="btn-secondary" onClick={importPhoto}>
+        <RiCameraLine className="size-5" /> Lançar por foto (planilha, extrato, nota)
+      </button>
 
       <div className="grid grid-cols-3 gap-2 text-center">
         <Stat card size="sm" label="Receitas" value={brl(summary.otherIncome)} tone="pos" />

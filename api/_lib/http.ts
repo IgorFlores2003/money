@@ -16,13 +16,13 @@ function allowed(origin: string | undefined, host: string | undefined) {
   }
 }
 
-async function readBody(req: IncomingMessage & { body?: unknown }) {
+async function readBody(req: IncomingMessage & { body?: unknown }, limit: number) {
   if (req.body !== undefined) return req.body; // a Vercel já leu o JSON
   const chunks: Buffer[] = [];
   let size = 0;
   for await (const c of req) {
     size += (c as Buffer).length;
-    if (size > 100_000) throw new Error("Corpo muito grande");
+    if (size > limit) throw new Error("Corpo muito grande");
     chunks.push(c as Buffer);
   }
   const raw = Buffer.concat(chunks).toString("utf8");
@@ -52,7 +52,7 @@ export async function nodeHandler(
   delete query.path;
   let body: unknown = {};
   try {
-    if (req.method !== "GET" && req.method !== "DELETE") body = await readBody(req);
+    if (req.method !== "GET" && req.method !== "DELETE") body = await readBody(req, path === "import/photo" ? 5_000_000 : 100_000);
   } catch {
     res.statusCode = 400;
     res.setHeader("Content-Type", "application/json");

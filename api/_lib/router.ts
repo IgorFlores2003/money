@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import type { Knex } from "knex";
 import { db } from "./db.js";
 import { forgetUser, userFromToken, type AuthUser } from "./auth.js";
+import { readPhoto, VisionError } from "./vision.js";
 import {
   addMonths,
   billingMonth,
@@ -80,6 +81,18 @@ const uuid = (v: unknown) =>
   typeof v === "string" &&
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 const MAX_CENTS = 2_000_000_000;
+/** Foto em base64: ~3 MB (o app reduz antes de enviar). */
+export const MAX_PHOTO_CHARS = 4_000_000;
+
+/** Limite de leituras por pessoa (por instância da função): evita abuso da IA. */
+const photoUses = new Map<string, number[]>();
+function allowPhoto(userId: string) {
+  const hourAgo = Date.now() - 3_600_000;
+  const recent = (photoUses.get(userId) ?? []).filter((t) => t > hourAgo);
+  if (recent.length >= 30) throw new HttpError(429, "Muitas fotos em pouco tempo. Tente de novo daqui a pouco.");
+  recent.push(Date.now());
+  photoUses.set(userId, recent);
+}
 
 /** Garante que categoria e conta são da própria pessoa. */
 async function ownedRefs(k: Knex, userId: string, b: Body) {
@@ -183,6 +196,28 @@ const routes: Record<string, Handler> = {
     };
     const [row] = await k("profiles").where({ user_id: user.id }).update(patch).returning(PROFILE_COLUMNS);
     return row;
+  },
+
+  /**
+   * Lê uma foto e devolve os lançamentos encontrados, sem salvar nada:
+   * o app mostra para a pessoa conferir antes de lançar.
+   */
+  "POST import/photo": async ({ user, k, body }) => {
+    const mimeType = oneOf(body, "mime_type", ["image/jpeg", "image/png", "image/webp"] as const, "Formato da imagem");
+    const image = body.image;
+    if (typeof image !== "string" || !image || image.length > MAX_PHOTO_CHARS || !/^[A-Za-z0-9+/=]+$/.test(image))
+      throw bad("Imagem inválida ou grande demais.");
+    allowPhoto(user.id);
+    const [categories, accounts] = await Promise.all([
+      k("categories").where({ user_id: user.id, archived: false }).select("kind", "name"),
+      k("accounts").where({ user_id: user.id, archived: false }).select("name"),
+    ]);
+    try {
+      return { items: await readPhoto(image, mimeType, categories, accounts) };
+    } catch (e) {
+      if (e instanceof VisionError) throw new HttpError(502, e.message);
+      throw e;
+    }
   },
 
   /** Todos os dados da conta em JSON (LGPD, art. 18: acesso e portabilidade). */

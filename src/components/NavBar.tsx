@@ -1,9 +1,9 @@
-import { RiAddLine, RiMoneyDollarCircleLine } from "react-icons/ri";
+import { RiAddLine, RiCameraLine, RiMoneyDollarCircleLine } from "react-icons/ri";
 import { TABS, useNav } from "../navigation";
 
 /** Menu lateral no computador. */
 export function SideNav() {
-  const { tab, go, editEntry } = useNav();
+  const { tab, go, editEntry, importPhoto } = useNav();
   return (
     <nav className="hidden w-60 shrink-0 flex-col gap-1 border-r border-line bg-card p-4 md:flex md:sticky md:top-0 md:h-dvh">
       <div className="mb-6 flex items-center gap-2 px-2 text-xl font-bold">
@@ -23,6 +23,9 @@ export function SideNav() {
       ))}
       <button className="btn-primary mt-4" onClick={() => editEntry()}>
         <RiAddLine className="size-5" /> Novo lançamento
+      </button>
+      <button className="btn-secondary" onClick={importPhoto}>
+        <RiCameraLine className="size-5" /> Lançar por foto
       </button>
     </nav>
   );
