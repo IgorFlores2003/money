@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { RiArrowLeftLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { supabase } from "./supabase";
 import { authError, passwordError } from "./auth";
-import { ErrorNote } from "./ui";
+import { ErrorNote } from "./components";
 
 type Mode = "login" | "signup" | "confirm" | "forgot" | "recover" | "password";
 

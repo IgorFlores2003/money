@@ -4,7 +4,7 @@ import { RiMoneyDollarCircleLine, RiShieldCheckLine } from "react-icons/ri";
 import AccountAccess from "./AccountAccess";
 import App from "./App";
 import { supabase } from "./supabase";
-import { Spinner } from "./ui";
+import { Spinner } from "./components";
 
 export default function AuthGate() {
   const [session, setSession] = useState<Session | null | undefined>(supabase ? undefined : null);
@@ -27,7 +27,7 @@ export default function AuthGate() {
     <div className="flex min-h-dvh bg-card">
       <aside className="hidden w-[40%] max-w-xl flex-col justify-between bg-[#0f7a4a] p-12 text-white lg:flex">
         <div className="flex items-center gap-2 text-2xl font-bold">
-          <RiMoneyDollarCircleLine className="size-8" /> Sobra
+          <RiMoneyDollarCircleLine className="size-8" /> Meu DimDim
         </div>
         <p className="max-w-xs text-lg leading-relaxed">
           Horas trabalhadas, salário, receitas e dívidas no mesmo lugar. E quanto sobra no fim do mês.
@@ -39,7 +39,7 @@ export default function AuthGate() {
       <main className="flex flex-1 justify-center px-5 pt-[calc(2rem+env(safe-area-inset-top))] pb-[calc(2rem+env(safe-area-inset-bottom))] sm:items-center">
         <div className="w-full max-w-sm">
           <div className="mb-10 flex items-center gap-2 text-2xl font-bold lg:hidden">
-            <RiMoneyDollarCircleLine className="size-8 text-brand-600" /> Sobra
+            <RiMoneyDollarCircleLine className="size-8 text-brand-600" /> Meu DimDim
           </div>
           {!supabase ? (
             <p className="text-ink-500">

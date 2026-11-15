@@ -166,6 +166,10 @@ export function hourValueCents(p: Profile): number {
   return 0;
 }
 
+/** Valor de um registro de horas, em centavos. */
+export const workValueCents = (w: Pick<WorkEntry, "seconds" | "rate_cents">) =>
+  Math.round((w.seconds * w.rate_cents) / 3600);
+
 export const workIncomeCents = (work: WorkEntry[]) =>
   Math.round(work.reduce((s, w) => s + (w.seconds * w.rate_cents) / 3600, 0));
 

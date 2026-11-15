@@ -1,4 +1,4 @@
-# Sobra
+# Meu DimDim
 
 Finanças pessoais para web e Android: horas de serviço, salário, receitas e dívidas, e quanto sobra no fim do mês. React + TypeScript + Tailwind no front, Knex + Postgres (Supabase) na API, login pelo Supabase Auth.
 
@@ -19,7 +19,7 @@ Finanças pessoais para web e Android: horas de serviço, salário, receitas e d
 - `shared/finance.ts`: regras de dinheiro e horas (centavos inteiros, meses `AAAA-MM`), usadas pela API e pelo app. Testes em `tests/`.
 - `db/migrations`: esquema Knex. RLS ligado sem políticas: as tabelas só são acessadas pela API.
 - `api/index.ts`: única função da Vercel; `vercel.json` manda `/api/*` para ela. Rotas em `api/_lib/router.ts`, sempre filtradas pelo `user_id` do token.
-- `src/`: app React (`screens/` com Início, Lançamentos, Horas, Pessoas, Ajustes).
+- `src/`: app React. `store.tsx` (dados da conta e do mês, `useStore`), `navigation.tsx` (abas, `useNav`), `components/` (peças reutilizáveis), `hooks/useAction.ts` (salvar/excluir com carregando e erro) e `screens/<tela>/` com Início, Lançamentos, Horas, Pessoas e Ajustes.
 
 ## Rodar localmente
 
@@ -36,7 +36,7 @@ npm test
 1. Crie o projeto. Em **Connect → Transaction pooler** copie a URL (porta 6543) para `DATABASE_URL`.
 2. Em **Project Settings → API** copie a URL e a chave `anon` para `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` e `SUPABASE_URL`/`SUPABASE_ANON_KEY`.
 3. `npm run db:migrate`.
-4. Em **Authentication → Email**, deixe a confirmação de e-mail ligada. Para o código de 6 dígitos funcionar, o template de e-mail precisa usar `{{ .Token }}` (dá para copiar os de `../health/supabase/templates`).
+4. E-mail (SMTP do Gmail, templates com código de 6 dígitos em `supabase/templates`): preencha o bloco "Admin local" do `.env` e rode `npm run auth:configure`.
 
 ## Vercel
 

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { Knex } from "knex";
 import { db } from "./db.js";
-import { userFromToken, type AuthUser } from "./auth.js";
+import { forgetUser, userFromToken, type AuthUser } from "./auth.js";
 import {
   addMonths,
   billingMonth,
@@ -183,6 +183,18 @@ const routes: Record<string, Handler> = {
     };
     const [row] = await k("profiles").where({ user_id: user.id }).update(patch).returning(PROFILE_COLUMNS);
     return row;
+  },
+
+  /**
+   * Exclui a conta de vez (exigência do Google Play). Apagar o usuário do
+   * Supabase Auth leva junto, em cascata, perfil, categorias, contas,
+   * lançamentos, contas fixas e horas.
+   */
+  "POST me/delete": async ({ user, k, body }) => {
+    if (body.confirm !== "EXCLUIR") throw bad("Digite EXCLUIR para confirmar.");
+    await k.raw("delete from auth.users where id = ?", [user.id]);
+    forgetUser(user.id);
+    return { ok: true };
   },
 
   // ----- Categorias (infinitas, de despesa e de receita) -----

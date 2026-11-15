@@ -1,4 +1,4 @@
-package com.sobra.financas;
+package com.meudimdim.app;
 
 import com.getcapacitor.BridgeActivity;
 

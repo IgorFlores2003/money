@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 /** Em desenvolvimento, /api roda dentro do próprio Vite (mesmo código da Vercel). */
 function api(): Plugin {
   return {
-    name: "sobra-api",
+    name: "meudimdim-api",
     configureServer(server) {
       Object.assign(process.env, loadEnv("development", process.cwd(), ""));
       server.middlewares.use("/api", async (req, res) => {

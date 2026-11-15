@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import AuthGate from "./AuthGate";
-import { ConfirmHost } from "./ui";
+import { ConfirmHost } from "./components";
 import { applyColorMode, colorMode } from "./theme";
 import "./styles.css";
 

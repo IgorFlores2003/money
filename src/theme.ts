@@ -1,5 +1,5 @@
 export type ColorMode = "system" | "light" | "dark";
-const KEY = "sobra-theme";
+const KEY = "meudimdim-theme";
 
 export function colorMode(): ColorMode {
   try {

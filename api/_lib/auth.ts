@@ -37,3 +37,8 @@ export async function userFromToken(token: string): Promise<AuthUser | null> {
   cache.set(token, { user, until: Date.now() + 60_000 });
   return user;
 }
+
+/** Tira do cache os tokens de um usuário (ex.: depois de excluir a conta). */
+export function forgetUser(id: string) {
+  for (const [token, hit] of cache) if (hit.user.id === id) cache.delete(token);
+}

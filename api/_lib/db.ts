@@ -1,5 +1,6 @@
 import knex, { type Knex } from "knex";
 import pg from "pg";
+import { sslFor } from "./ssl.js";
 
 // integer/bigint/numeric chegam como número (valores em centavos cabem em int).
 pg.types.setTypeParser(20, (v) => Number(v));
@@ -20,8 +21,7 @@ export function db(): Knex {
     client: "pg",
     connection: {
       connectionString: process.env.DATABASE_URL,
-      // Supabase exige SSL; o Postgres local de testes não usa.
-      ssl: /@(localhost|127\.0\.0\.1)[:/]/.test(process.env.DATABASE_URL ?? "") ? false : { rejectUnauthorized: false },
+      ssl: sslFor(process.env.DATABASE_URL),
     },
     pool: { min: 0, max: Number(process.env.DB_POOL_MAX) || 3, idleTimeoutMillis: 10_000 },
   });
