@@ -50,7 +50,7 @@ npm test
 O app abre o front embutido e chama a API publicada:
 
 ```sh
-# no .env: VITE_API_URL=https://seu-app.vercel.app
+# a URL da API publicada fica em .env.android (VITE_API_URL)
 npm run android:sync
 npm run android:open
 ```
